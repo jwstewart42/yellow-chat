@@ -7,6 +7,6 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 COPY app/ /app/
-COPY run.sh /
+COPY rootfs /
 
-CMD ["/run.sh"]
+CMD []

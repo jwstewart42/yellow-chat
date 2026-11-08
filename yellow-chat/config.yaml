@@ -1,6 +1,6 @@
 ---
 name: "Yellow Chat"
-version: "1.0.5"
+version: "1.0.6"
 slug: yellow_chat
 image: "ttl.sh/yellowchat-7f3a9c2e"
 arch: ["aarch64"]

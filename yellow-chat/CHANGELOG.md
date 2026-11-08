@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Run the server as a modern s6-rc.d longrun service with an empty CMD (the layout every working app on this box uses).
+
 ## 1.0.5
 
 - Ship as a prebuilt GHCR image (built by GitHub Actions on arm64): this Yellow cannot start locally-built apps, so config now points at ghcr.io/jwstewart42/yellow-chat and build.yaml is gone.
