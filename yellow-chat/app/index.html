@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yellow Chat</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, sans-serif;
+    background: #121417; color: #e8eaed; display: flex; flex-direction: column;
+    height: 100dvh;
+  }
+  header {
+    padding: 10px 14px; background: #1b1e23; font-weight: 600;
+    border-bottom: 1px solid #2a2e35; flex: none;
+  }
+  #log {
+    flex: 1; overflow-y: auto; padding: 12px 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .msg { max-width: 85%; padding: 8px 11px; border-radius: 12px; line-height: 1.35; word-wrap: break-word; }
+  .msg .who { font-size: 0.72rem; font-weight: 700; opacity: 0.85; margin-bottom: 2px; }
+  .msg .when { font-size: 0.68rem; opacity: 0.55; margin-left: 6px; font-weight: 400; }
+  .msg .text { white-space: pre-wrap; }
+  .from-joey  { background: #1d4ed8; align-self: flex-end;   border-bottom-right-radius: 4px; }
+  .from-muse  { background: #4c2d73; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .from-codex  { background: #14532d; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .from-other  { background: #2a2e35; align-self: flex-start; }
+  form {
+    flex: none; display: flex; gap: 8px; padding: 10px;
+    background: #1b1e23; border-top: 1px solid #2a2e35;
+  }
+  input[type="text"] {
+    flex: 1; padding: 11px; border-radius: 8px; border: 1px solid #3a3f47;
+    background: #121417; color: #e8eaed; font-size: 1rem;
+  }
+  button {
+    padding: 11px 18px; border: 0; border-radius: 8px; cursor: pointer;
+    background: #f2c230; color: #141414; font-weight: 700; font-size: 1rem;
+  }
+  button:disabled { opacity: 0.5; }
+</style>
+</head>
+<body>
+<header>Yellow Chat</header>
+<div id="log"></div>
+<form id="composer">
+  <input type="text" id="text" placeholder="Message…" autocomplete="off" maxlength="4000">
+  <button type="submit" id="send">Send</button>
+</form>
+<script>
+"use strict";
+const logEl = document.getElementById("log");
+const form = document.getElementById("composer");
+const input = document.getElementById("text");
+const sendBtn = document.getElementById("send");
+const HEADERS = { "X-Agent-Key": "ingress" };
+let lastId = 0;
+
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return isNaN(d) ? "" : d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
+function render(msg) {
+  const div = document.createElement("div");
+  div.className = "msg from-" + (["joey", "muse", "codex"].includes(msg.from) ? msg.from : "other");
+  const who = document.createElement("div");
+  who.className = "who";
+  who.textContent = msg.from;
+  const when = document.createElement("span");
+  when.className = "when";
+  when.textContent = fmtTime(msg.ts);
+  who.appendChild(when);
+  const text = document.createElement("div");
+  text.className = "text";
+  text.textContent = msg.text;
+  div.appendChild(who);
+  div.appendChild(text);
+  logEl.appendChild(div);
+}
+
+async function poll() {
+  try {
+    const res = await fetch("api/messages?after=" + lastId, { headers: HEADERS });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.messages.length) {
+      const nearBottom = logEl.scrollHeight - logEl.scrollTop - logEl.clientHeight < 140;
+      for (const m of data.messages) {
+        render(m);
+        lastId = Math.max(lastId, m.id);
+      }
+      if (nearBottom) logEl.scrollTop = logEl.scrollHeight;
+    }
+  } catch (e) { /* transient; next poll retries */ }
+}
+
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  sendBtn.disabled = true;
+  try {
+    const res = await fetch("api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...HEADERS },
+      body: JSON.stringify({ from: "joey", text })
+    });
+    if (res.ok) {
+      input.value = "";
+      await poll();
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+});
+
+poll();
+setInterval(poll, 2000);
+input.focus();
+</script>
+</body>
+</html>
