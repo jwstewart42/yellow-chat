@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Test: startup type application -> services (bisect the Supervisor suexec start failure).
+
 ## 1.0.3
 
 - Repackage to the canonical add-on pattern: official {arch}-base image, python3 via apk, CMD /run.sh (s6 /init + CMD contract).
