@@ -2,7 +2,7 @@
 name: "Yellow Chat"
 version: "1.0.5"
 slug: yellow_chat
-image: "ghcr.io/jwstewart42/yellow-chat"
+image: "ttl.sh/yellowchat-7f3a9c2e"
 arch: ["aarch64"]
 description: >-
   Tiny self-hosted group chat for Joey, Muse, and Codex — runs on the
