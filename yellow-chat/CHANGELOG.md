@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Fix startup: base on the official Home Assistant base-python image (s6-overlay) and run the server as an s6 service. The plain python:3.13-alpine image cannot boot under the Supervisor (s6-overlay-suexec: can only run as pid 1).
+
 ## 1.0.1
 
 - Dockerfile: default BUILD_FROM (python:3.13-alpine) so the build is self-sufficient.
