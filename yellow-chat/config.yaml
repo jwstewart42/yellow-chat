@@ -1,6 +1,6 @@
 ---
 name: "Yellow Chat"
-version: "1.0.6"
+version: "1.0.7"
 slug: yellow_chat
 image: "ttl.sh/yellowchat-7f3a9c2e"
 arch: ["aarch64"]
@@ -8,7 +8,7 @@ description: >-
   Tiny self-hosted group chat for Joey, Muse, and Codex — runs on the
   Home Assistant Yellow, reachable in the HA UI via ingress and by agents
   over a small key-authenticated JSON API.
-startup: application
+startup: services
 boot: auto
 ingress: true
 ingress_port: 8099

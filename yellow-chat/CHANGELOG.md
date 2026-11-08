@@ -1,3 +1,7 @@
+## 1.0.7
+
+- startup: services (was application) - bisect for the Supervisor start wrapper.
+
 ## 1.0.6
 
 - Run the server as a modern s6-rc.d longrun service with an empty CMD (the layout every working app on this box uses).
