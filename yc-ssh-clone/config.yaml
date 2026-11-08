@@ -9,6 +9,7 @@ startup: services
 boot: manual
 ingress: true
 ingress_port: 8099
+init: true
 options:
   authorized_keys: []
   password: ""
