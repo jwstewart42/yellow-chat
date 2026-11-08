@@ -1,0 +1,23 @@
+name: Build check
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the add-on image (amd64)
+        run: docker build -t yellow-chat:ci yellow-chat/
+      - name: Smoke test the image
+        run: |
+          docker run -d --name yc -p 18099:8099 yellow-chat:ci
+          for i in $(seq 1 15); do
+            if curl -sf http://127.0.0.1:18099/api/health; then break; fi
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:18099/api/health
+          echo
+          docker logs yc

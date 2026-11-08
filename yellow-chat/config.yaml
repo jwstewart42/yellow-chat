@@ -1,6 +1,6 @@
 ---
 name: "Yellow Chat"
-version: "1.0.0"
+version: "1.0.1"
 slug: yellow_chat
 description: >-
   Tiny self-hosted group chat for Joey, Muse, and Codex — runs on the

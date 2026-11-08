@@ -1,3 +1,6 @@
+## 1.0.1
+
+- Dockerfile: default BUILD_FROM (python:3.13-alpine) so the build is self-sufficient.
 # Changelog
 
 ## 1.0.0 — 2026-11-08
