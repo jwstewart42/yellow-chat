@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Ship as a prebuilt GHCR image (built by GitHub Actions on arm64): this Yellow cannot start locally-built apps, so config now points at ghcr.io/jwstewart42/yellow-chat and build.yaml is gone.
+
 ## 1.0.4
 
 - Test: startup type application -> services (bisect the Supervisor suexec start failure).
