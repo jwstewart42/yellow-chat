@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Repackage to the canonical add-on pattern: official {arch}-base image, python3 via apk, CMD /run.sh (s6 /init + CMD contract).
+
 ## 1.0.2
 
 - Fix startup: base on the official Home Assistant base-python image (s6-overlay) and run the server as an s6 service. The plain python:3.13-alpine image cannot boot under the Supervisor (s6-overlay-suexec: can only run as pid 1).
