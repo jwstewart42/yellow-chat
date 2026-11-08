@@ -12,6 +12,7 @@ startup: services
 boot: auto
 ingress: true
 ingress_port: 8099
+init: false
 panel_icon: "mdi:message-text"
 panel_title: "Yellow Chat"
 ports:
